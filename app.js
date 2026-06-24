@@ -17,6 +17,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
 const dbUrl = process.env.ATLASDB_URL;
+console.log("DB URL:", process.env.ATLASDB_URL);
 
 const listingsRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
@@ -42,15 +43,15 @@ const store = MongoStore.create({
   touchAfter: 24 * 3600,
 });
 
-store.on("error", () => {
-  console.log("Error in MONG0 SESSION STORE", err);
+store.on("error", (err) => {
+  console.log("Error in MONGO SESSION STORE", err);
 });
 
 const sessionOptions = {
   store,
   secret: process.env.SECRET,
   resave: false,
-  saveUnintialized: true,
+  saveUninitialized: true,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
